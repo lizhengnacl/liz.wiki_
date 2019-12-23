@@ -1,0 +1,484 @@
+import Card from '~/components/card'
+import { Code, InlineCode } from '~/components/text/code'
+import { P } from '~/components/text'
+import Link from '~/components/text/link'
+import Note from '~/components/text/note'
+
+export const meta = {
+  editUrl:
+    'pages/docs/configuration/configuration-mdx/configuration/configuration.mdx',
+  lastEdited: '2019-11-05T19:44:00.000Z'
+}
+
+# Project
+
+## name
+
+**Type**: `String`.
+
+**Valid values**: string name for the deployment.
+
+**Limit**: A maximum length of 52 characters
+
+The prefix for all new deployment instances. The CLI usually generates this field automatically based on the name of the directory. But if you'd like to define it explicitly, this is the way to go.
+
+The defined name is also used to organize the deployment into [a project](/docs/v2/platform/projects).
+
+<Code lang="json">{`{
+  "name": "zeit-chat"
+}`}</Code>
+
+## version
+
+**Type**: `Number`.
+
+**Valid values**: `1`, `2`.
+
+Specifies the [Now Platform version](/docs/v2/platform/overview#versioning) the deployment should use and is known to work with. We strongly recommend setting a `version` when working on production systems or using source control (e.g. [Git](https://git-scm.com)).
+
+<Code lang="json">{`{
+  "version": 2
+}`}</Code>
+
+## alias
+
+**Type**: `Array` or `String`.
+
+**Valid values**: [domain names](/docs/v2/custom-domains) (optionally including subdomains) added to the account, or a string for a suffixed URL using `.now.sh` or a [Custom Deployment Suffix](/docs/v2/platform/add-ons/#custom-deployment-suffix).
+
+**Limit**: A maximum of 64 aliases in the array
+
+The alias or aliases are applied automatically using [Now for GitHub](/docs/v2/more/now-for-github), [Now for GitLab](/docs/v2/more/now-for-gitlab), or [Now for Bitbucket](/docs/v2/more/now-for-bitbucket) when merging or pushing to the default branch.
+
+You can deploy to the defined aliases using [Now CLI](/download) by setting the [production deployment environment target](/docs/v2/custom-domains#deploying-with-your-domain).
+
+<Code lang="json">{`{
+  "alias": ["my-domain.com", "my-alias"]
+}`}</Code>
+
+<Note>
+  Aliases from a <InlineCode>now.json</InlineCode> file will be <b>ignored</b>{' '}
+  when there are domains that have been{' '}
+  <Link href="/docs/v2/custom-domains/#deploying-with-your-domain">
+    configured for the project through the dashboard
+  </Link>
+  .
+</Note>
+
+## scope
+
+**Type**: `String`.
+
+**Valid values**: For teams, either an ID or slug. For users, either a email address, username, or ID.
+
+This property determines the scope ([user or team](/docs/v2/platform/users-and-teams/)) under which the project will be deployed by [Now CLI](/download).
+
+Furthermore, it also affects any other actions that the user takes within the directory that contains this configuration (e.g. listing [secrets](/docs/v2/serverless-functions/env-and-secrets/) using `now secrets ls`).
+
+<Code lang="json">{`{
+  "scope": "my-team"
+}`}</Code>
+
+<Note>
+  Deployments made via{' '}
+  <Link href="/docs/v2/git-integration">Git Integration</Link> will{' '}
+  <b>ignore</b> the <InlineCode>scope</InlineCode> property because the
+  repository is already connected to a{' '}
+  <Link href="/docs/v2/platform/projects">project</Link>.
+</Note>
+
+## env
+
+**Type:** `Object` of `String` keys and values.
+
+**Valid values:** environment keys and values.
+
+Environment variables passed to the invoked [Serverless Functions](/docs/v2/serverless-functions/introduction/).
+
+<P>
+  This example will pass the <InlineCode>MY_KEY</InlineCode> static env to all{' '}
+  <Link href="/docs/v2/serverless-functions/introduction/">
+    Serverless Functions
+  </Link>{' '}
+  and <InlineCode>SECRET</InlineCode> resolved from the{' '}
+  <InlineCode>my-secret-name</InlineCode>{' '}
+  <Link href="/docs/v2/serverless-functions/env-and-secrets">
+    secret
+  </Link>{' '}
+  dynamically.
+</P>
+<Code lang="json">{`{
+  "env": {
+    "MY_KEY": "this is the value",
+    "SECRET": "@my-secret-name"
+  }
+}`}</Code>
+
+## build.env
+
+**Type:** `Object` of `String` keys and values inside the `build` `Object`.
+
+**Valid values:** environment keys and values.
+
+[Environment variables](/docs/v2/build-step/#using-environment-variables-and-secrets) passed to the [Build](/docs/v2/build-step) processes.
+
+<P>
+  The following example will pass the <InlineCode>MY_KEY</InlineCode> static
+  env to all{' '}
+  <Link href="/docs/v2/build-step">Builds</Link> and
+  <InlineCode>SECRET</InlineCode> resolved from the <InlineCode>
+    my-secret-name
+  </InlineCode> <Link href="/docs/v2/build-step/#using-environment-variables-and-secrets">
+    secret
+  </Link> dynamically.
+</P>
+<Code lang="json">{`{
+  "build": {
+    "env": {
+      "MY_KEY": "this is the value",
+      "SECRET": "@my-secret-name"
+    }
+  }
+}`}</Code>
+
+## builds
+
+<Note type="alert">
+  The <InlineCode>builds</InlineCode> property has been deprecated in favor of{' '}
+  <Link href="/docs/configuration#project/functions">functions</Link>. In the
+  majority of cases, you are no longer required to specify a{' '}
+  <InlineCode>build</InlineCode>, instead relying on the{' '}
+  <Link href="/docs/v2/build-step/">build step</Link>.
+</Note>
+
+**Type:** `Array` of build `Object`.
+
+**Valid values:** a list of build descriptions whose `src` references valid source files.
+
+**Build object definition:**
+
+- `src` (`String`): A glob expression or pathname. If more than one file is resolved, one build will be created per matched file. It can include `*` and `**`.
+- `use` (`String`): An npm module to be installed by the [build process](/docs/v2/advanced/builders). It can include a semver compatible version (e.g.: `@org/proj@1`).
+- `config` (`Object`): Optionally, an object including arbitrary metadata to be passed to the Builder.
+
+<P>
+  The following will include all HTML files as-is (to be served statically), and{' '}
+  <Link href="/docs/v2/advanced/runtimes">Build</Link> all Python files and JS
+  files into{' '}
+  <Link href="/docs/v2/serverless-functions/introduction/">
+    Serverless Functions
+  </Link>
+  .
+</P>
+
+<Code lang="json">{`{
+  "builds": [
+    { "src": "*.html", "use": "@now/static" },
+    { "src": "*.py", "use": "@now/python" },
+    { "src": "*.js", "use": "@now/node" }
+  ]
+}`}</Code>
+
+<Note>
+  When at least one <InlineCode>builds</InlineCode> item is specified, only the
+  outputs of the build processes will be included in the resulting deployment as
+  a security precaution. This is why we need to white-list static files
+  explicitly with
+  <InlineCode>@now/static</InlineCode>.
+</Note>
+
+## functions
+
+**Type:** `Object` of key `String` and value `Object`.
+
+**Key definition:**
+
+A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern that matches the paths of the Serverless Functions you would like to customize (like `api/*.js` or `api/test.js`).
+
+**Value definition:**
+
+- `runtime` (optional): The npm package name of a [Runtime](/docs/runtimes), including its version.
+- `memory` (optional): An integer defining the memory your Serverless Function should be provided with (between `128` and `3008`, in intervals of `64`).
+- `maxDuration` (optional): An integer defining how long your Serverless Function should be allowed to run on every request in seconds (between `1` and the maximum limit of your plan, as mentioned below).
+- `includeFiles` (optional): A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern to match files that should be included in your Serverless Function. If you’re using a Community Runtime, the behavior might vary. Please consult its documentation for more details.
+- `excludeFiles` (optional): A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern to match files that should be excluded from your Serverless Function. If you’re using a Community Runtime, the behavior might vary. Please consult its documentation for more details.
+
+**Description:**
+
+By default, no configuration is needed to deploy Serverless Functions to ZEIT Now.
+
+For all [officially supported runtimes](/docs/v2/serverless-functions/supported-languages/), the only requirement is to create an `api` directory at the root of your project directory, placing your Serverless Functions inside.
+
+<Note type="warning">
+  It is currently not possible to use the <InlineCode>functions</InlineCode>{' '}
+  property when not using the <InlineCode>/api</InlineCode> directory for your
+  Serverless Functions. If this behavior is required, you should use the{' '}
+  <Link href="/docs/configuration#project/builds">builds</Link> property
+  instead.
+</Note>
+
+When deployed, each Serverless Function receives the following properties:
+
+- **Memory:** 1024 MB (1 GB)
+- **Maximum Execution Duration:** 10s (Free), 60s (Pro), 600s (Business), or 900s (Enterprise)
+
+To configure them, you can add the `functions` property like so:
+
+<Code lang="json">{`{
+  "functions": {
+    "api/test.js": {
+      "memory": 3008,
+      "maxDuration": 60
+    }
+  }
+}`}</Code>
+
+Both sub properties are optional and need to match the following constraints mentioned at the top of this section.
+
+In order to use a runtime that is not [officially supported](/docs/v2/serverless-functions/supported-languages/), you can add a `runtime` property to the definition:
+
+<Code lang="json">{`{
+  "functions": {
+    "api/test.php": {
+      "runtime": "now-php"
+    }
+  }
+}`}</Code>
+
+In the example above, the `api/test.php` Serverless Function does not use one of the [officially supported runtimes](/docs/v2/serverless-functions/supported-languages/). In turn, a `runtime` property was added in order to invoke the [now-php](https://www.npmjs.com/package/now-php) community runtime.
+
+For more information on Runtimes, see the documentation:
+
+<Card title="Runtimes" href="/docs/runtimes">
+  Choose from a range of existing Runtimes or make your own.
+</Card>
+
+## routes
+
+<Note type="alert">
+  The <InlineCode>routes</InlineCode> property has been deprecated in favor of{' '}
+  <Link href="/docs/configuration#project/redirects">redirects</Link>,{' '}
+  <Link href="/docs/configuration#project/rewrites">rewrites</Link>,{' '}
+  <Link href="/docs/configuration#project/headers">headers</Link>,{' '}
+  <Link href="/docs/configuration#project/cleanurls">cleanUrls</Link>, and{' '}
+  <Link href="/docs/configuration#project/trailingslash">trailingSlash</Link>.
+</Note>
+
+**Type:** `Array` of route `Object`.
+
+**Valid values:** a list of route definitions.
+
+**Route object definition:**
+
+- `src`: A [PCRE-compatible regular expression](https://www.pcre.org/original/doc/html/pcrepattern.html) that matches each incoming pathname (excluding querystring).
+- `methods`: A set of HTTP method types. If no method is provided, requests with any HTTP method will be a candidate for the route.
+- `dest`: A destination pathname or full URL, including querystring, with the ability to embed capture groups as $1, $2…
+- `headers`: A set of headers to apply for responses.
+- `status`: A status code to respond with. Can be used in tandem with `Location:` header to implement redirects.
+- `continue`: A boolean to change matching behavior. If `true`, routing will continue even when the `src` is matched.
+
+<P>
+  This example configures custom routes that map to static files and{' '}
+  <Link href="/docs/v2/serverless-functions/introduction/">
+    Serverless Functions
+  </Link>
+  .
+</P>
+<Code lang="json">{`{
+  "routes": [
+    { "src": "/custom-page", "headers": {"cache-control": "s-maxage=1000"}, "dest": "/index.html" },
+    { "src": "/api", "dest": "/my-api.js" },
+    { "src": "/users", "methods": ["POST"], "dest": "/users-api.js" },
+    { "src": "/users/(?<id>[^/]*)", "dest": "/users-api.js?id=$id" },
+    { "src": "/.*", "dest": "https://my-old-site.com"},
+    { "src": "/legacy", "status": 404},
+    { "src": "/redirect", "status": 308, "headers": { "Location": "https://zeit.co/" } }
+  ]
+}`}</Code>
+
+For more information on routes, see the documentation:
+
+<Card title="Routes" href="/docs/configuration#routes">
+  Control your deployment's paths in detail with routes.
+</Card>
+
+## regions
+
+**Type:** `Array` of region identifier `String`.
+
+**Valid values:** a list of valid [region identifiers](/docs/v2/platform/regions-and-providers).
+
+By setting and modifying this value, you can decide the deployment **regions** of the [Serverless Functions](/docs/v2/serverless-functions/introduction/) that get created as a result of the [build steps](/docs/v2/build-step). By default, the closest region to the geographical location of the deployment is used, or if using a Now for Git integration, SFO is used by default.
+
+This value does not impact static files or edge caches, since deployments always have a [CDN layer](/docs/v2/network/caching/) in front.
+
+The special value `all` can be used to target all available regions.
+
+<Note>
+  The values in <InlineCode>regions</InlineCode> support targeting a region
+  generically, by omitting the number. If <InlineCode>sfo</InlineCode> is
+  specified, our backend will select a singular region (like{' '}
+  <InlineCode>sfo1</InlineCode>) at deploy time.
+</Note>
+
+<Code lang="json">{`{
+  "regions": ["sfo1", "bru"]
+}`}</Code>
+
+## public
+
+**Type**: `Boolean`.
+
+**Default Value**: `false`.
+
+When set to `true`, both the [source view](/docs/v2/platform/deployments/#source-view) and [logs view](/docs/v2/platform/deployments/#logs-view) will be publicly accessible (when the user is authenticated with ZEIT).
+
+<Code lang="json">{`{
+  "public": true
+}`}</Code>
+
+## cleanUrls
+
+**Type**: `Boolean`.
+
+**Default Value**: `false`.
+
+When set to `true`, all HTML files will have their `.html` extension removed. When visiting a path that ends with `.html`, a 308 response will redirect the client to the extensionless path.
+
+For example, a file named `about.html` will be served when visiting the `/about` path. Visiting `/about.html` will redirect to `/about`.
+
+<Code lang="json">{`{
+  "cleanUrls": true
+}`}</Code>
+
+## trailingSlash
+
+**Type**: `Boolean`.
+
+**Default Value**: `null`.
+
+When set to `true`, visiting a path that does not end with a forward slash will respond with a 308 status code and redirect to the path with a trailing slash.
+
+When set to `false`, visiting a path that ends with a forward slash will respond with a 308 status code and redirect to the path without the trailing slash.
+
+For example, when `trailingSlash: false` the `/about/` path will redirect to `/about`.
+
+<Code lang="json">{`{
+  "trailingSlash": false
+}`}</Code>
+
+## redirects
+
+**Type:** `Array` of redirect `Object`.
+
+**Valid values:** a list of redirect definitions.
+
+**Redirect object definition:**
+
+- `source`: A pattern that matches each incoming pathname (excluding querystring).
+- `destination`: A location destination defined as an absolute pathname or external URL.
+- `statusCode`: An optional HTTP status code in the [301-308](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) range (default 308).
+
+<P>
+  This example configures custom redirects that map to static files,{' '}
+  <Link href="/docs/v2/serverless-functions/introduction">
+    Serverless Functions
+  </Link>,{' '}
+  and external URLs.
+</P>
+<Code lang="json">{`{
+  "redirects": [
+    { "source": "/me", "destination": "/profile.html" },
+    { "source": "/user", "destination": "/api/user", "statusCode": 308 },
+    { "source": "/view-source", "destination": "https://github.com/zeit/now" }
+  ]
+}`}</Code>
+
+## rewrites
+
+**Type:** `Array` of rewrite `Object`.
+
+**Valid values:** a list of rewrite definitions.
+
+**Rewrite object definition:**
+
+- `source`: A pattern that matches each incoming pathname (excluding querystring).
+- `destination`: An absolute pathname to an existing resource or an external URL.
+
+<P>
+  This example configures custom rewrites that map to static files,{' '}
+  <Link href="/docs/v2/serverless-functions/introduction">
+    Serverless Functions
+  </Link>,{' '}
+  automatic query string matching, and a wildcard proxy.
+</P>
+<Code lang="json">{`{
+  "rewrites": [
+    { "source": "/about", "destination": "/about-our-company.html" },
+    { "source": "/resize/:width/:height", "destination": "/api/sharp" },
+    { "source": "/user/:id", "destination": "/api/user?uid=:id" },
+    { "source": "/proxy/(.*)", "destination": "https://example.com/$1" }
+  ]
+}`}</Code>
+
+## headers
+
+**Type:** `Array` of header `Object`.
+
+**Valid values:** a list of header definitions.
+
+**Header object definition:**
+
+- `source`: A pattern that matches each incoming pathname (excluding querystring).
+- `headers`: An array of key/value pairs representing each response header.
+
+<P>
+  This example configures custom response headers for static files,{' '}
+  <Link href="/docs/v2/serverless-functions/introduction">
+    Serverless Functions
+  </Link>,
+  and a wildcard that matches all routes.
+</P>
+<Code lang="json">{`{
+  "headers": [
+    {
+      "source": "/service-worker.js",
+      "headers" : [
+        {
+          "key" : "Cache-Control",
+          "value" : "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/api/feed",
+      "headers" : [
+        {
+          "key" : "Content-Type",
+          "value" : "application/rss+xml"
+        },
+        {
+          "key" : "Cache-Control",
+          "value" : "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers" : [
+        {
+          "key" : "X-Content-Type-Options",
+          "value" : "nosniff"
+        },
+        {
+          "key" : "X-Frame-Options",
+          "value" : "DENY"
+        },
+        {
+          "key" : "X-XSS-Protection",
+          "value" : "1; mode=block"
+        }
+      ]
+    }
+  ]
+}`}</Code>

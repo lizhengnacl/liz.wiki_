@@ -1,0 +1,399 @@
+import Snippet from '~/components/snippet'
+import Caption from '~/components/text/caption'
+import { InlineCode, Code } from '~/components/text/code'
+import Link from '~/components/text/link'
+import Note from '~/components/text/note'
+import Tag from '~/components/text/tag'
+
+export const meta = {
+  editUrl: 'pages/docs/runtimes/runtimes-mdx/advanced/advanced.mdx',
+  lastEdited: '2019-10-22T21:47:59.000Z'
+}
+
+# Advanced Usage
+
+By default, no configuration is needed to deploy Serverless Functions to ZEIT Now.
+
+For all officially supported languages (see below), the only requirement is creating a `api` directory and placing your Serverless Functions inside.
+
+| File Extensions | Language |
+| --------------- | -------- |
+| .js, .ts        | Node.js  |
+| .go             | Go       |
+| .py             | Python   |
+| .rb             | Ruby     |
+
+In order to customize the Memory or Maximum Execution Duration of your Serverless Functions, you can use the [`functions` property](/docs/configuration#project/functions).
+
+## Community Runtimes
+
+If you would like to use a language that ZEIT Now does not support by default, you can use a Community Runtime by setting the [`functions` property](/docs/configuration#project/functions) in `now.json`:
+
+```json
+{
+  "functions": {
+    "api/test.php": {
+      "runtime": "now-php@0.0.7"
+    }
+  }
+}
+```
+
+The following Community Runtimes are recommended by ZEIT Now:
+
+| Runtime | Runtime Module | Docs                                     |
+| ------- | -------------- | ---------------------------------------- |
+| PHP     | `now-php`      | <https://github.com/juicyfx/now-php>     |
+| Rust    | `now-rust`     | <https://github.com/mike-engel/now-rust> |
+
+<Note>
+  If you would like to create a Community Runtime, see the{' '}
+  <Link href="#advanced-usage/developing-your-own-runtime">
+    Developing Your Own Runtime section
+  </Link>
+  .
+</Note>
+
+## Advanced Node.js Usage
+
+In order to use this Runtime, no configuration is needed. You only need to create a file inside the `api` directory.
+
+**The entry point for `src` must be a glob matching `.js` or `.ts` files** that export a default function. For more information on using this Runtime, [see the Node.js Runtime section](#official-runtimes/node-js).
+
+### Disabling Helpers for Node.js
+
+Within a `now.json` configuration file at your project's root, use the following build environment variable to disable [helpers](#official-runtimes/node-js/node-js-request-and-response-objects).
+
+```json
+{
+  "build": {
+    "env": {
+      "NODEJS_HELPERS": "0"
+    }
+  }
+}
+```
+
+<Caption>
+  An example <InlineCode>now.json</InlineCode> file that will turn off the
+  default helpers for your Node.js Serverless Function.
+</Caption>
+
+### Private npm Modules for Node.js
+
+To install private npm modules, define `NPM_TOKEN` as a [build environment variable](/docs/configuration#project/build-env) in `now.json`.
+
+Alternatively, define `NPM_RC` as a [build environment variable](/docs/configuration#project/build-env) with the contents of `~/.npmrc`.
+
+### Custom Build Step for Node.js
+
+You can run build tasks by creating a `now-build` script within a `package.json` file at the entry point's level or higher. For example:
+
+```json
+{
+  "scripts": {
+    "now-build": "node ./build.js"
+  }
+}
+```
+
+<Caption>
+  An example <InlineCode>package.json</InlineCode> file with a{' '}
+  <InlineCode>now-build</InlineCode> script to execute in the build step.
+</Caption>
+
+Along with build script named `build.js`:
+
+```js
+const fs = require('fs')
+fs.writeFile('built-time.js', (module.exports = '${new Date()}'), err => {
+  if (err) throw err
+  console.log('Build time file created successfully!')
+})
+```
+
+<Caption>
+  An example Node.js file, executed by the above{' '}
+  <InlineCode>package.json</InlineCode> build script.
+</Caption>
+
+And a `.js` file for the built Serverless Functions, `index.js` inside the `/api` directory:
+
+```js
+const BuiltTime = require('./built-time')
+module.exports = (req, res) => {
+  res.setHeader('content-type', 'text/plain')
+  res.send(`
+    This Serverless Function was built at ${new Date(BuiltTime)}.
+    The current time is ${new Date()}
+  `)
+}
+```
+
+<Caption>
+  An example Node.js Serverless Function, using information from the created
+  file from the build script.
+</Caption>
+
+### Legacy Serverful Behavior
+
+A Node.js Runtime entrypoint can contain one of the following to retain legacy serverful behavior:
+
+- Default export server, such as `module.exports = http.createServer((req, res) => { res.end('hello') })`.
+- Server listens on a port, such as `http.createServer((req, res) => { res.end('hello') }).listen(3000)`.
+
+### AWS Lambda API
+
+The Node.js Runtime provides a way to opt into the [AWS Lambda API](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html). This is useful if you have existing Serverless Functions you wish to deploy to ZEIT Now but do not want to change the API.
+
+```js
+exports.handler = async function(event, context, callback) {
+  return {
+    statusCode: 200,
+    headers: {},
+    body: 'Hello world'
+  }
+}
+```
+
+```json
+{
+  "build": {
+    "env": {
+      "NODEJS_AWS_HANDLER_NAME": "handler"
+    }
+  }
+}
+```
+
+The value of the environment variable needs to match the name of the method that is exported from your Serverless Functions.
+
+## Advanced Go Usage
+
+In order to use this Runtime, no configuration is needed. You only need to create a file inside the `api` directory.
+
+**The entry point of this Runtime is a global matching `.go` files** that export a function that implements the `http.HandlerFunc` signature. For more information on using this Runtime, [see the Go Runtime section](#official-runtimes/go).
+
+### Private Packages for Go
+
+To install private packages with `go get`, define `GIT_CREDENTIALS` as a [build environment variable](/docs/configuration#project/build-env) in `now.json`.
+
+All major Git providers are supported including GitHub, GitLab, Bitbucket, as well as a self-hosted Git server.
+
+With GitHub, you will need to [create a personal token](https://github.com/settings/tokens) with permission to access your private repository.
+
+```json
+{
+  "build": {
+    "env": {
+      "GIT_CREDENTIALS": "https://username:token@github.com"
+    }
+  }
+}
+```
+
+<Caption>
+  An example <InlineCode>now.json</InlineCode> file containing a build
+  environment variable with the value of GitHub credentials.
+</Caption>
+
+## Advanced Python Usage
+
+In order to use this Runtime, no configuration is needed. You only need to create a file inside the `api` directory.
+
+**The entry point of this Runtime is a glob matching `.py` source files** with one of the following variables defined:
+
+- `handler` that inherits from the `BaseHTTPRequestHandler` class.
+- `app` that exposes a WSGI or ASGI Application.
+
+### Web Server Gateway Interface
+
+The Web Server Gateway Interface (WSGI) is a calling convention for web servers to forward requests to web applications written in Python. You can use WSGI with frameworks such as Flask or Django.
+
+Instead of defining a `handler`, define an `app` variable in your Python file, when using `now.json` config. For example, define a `index.py` file inside your project as follows:
+
+```python
+from flask import Flask, Response
+app = Flask(__name__)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return Response("<h1>Flask on Now</h1><p>You visited: /%s</p>" % (path), mimetype="text/html")
+```
+
+<Caption>
+  An example <InlineCode>index.py</InlineCode> file, using Flask for a WSGI
+  application.
+</Caption>
+
+Inside `requirements.txt` define:
+
+```
+flask==1.0.2
+```
+
+<Caption>
+  An example <InlineCode>requirements.txt</InlineCode> file, listing{' '}
+  <InlineCode>flask</InlineCode> as a dependency.
+</Caption>
+
+### Asynchronous Server Gateway Interface
+
+The Asynchronous Server Gateway Interface (ASGI) is a calling convention for web servers to forward requests to asynchronous web applications written in Python. You can use ASGI with frameworks such as [Sanic](https://sanic.readthedocs.io).
+
+Instead of defining a `handler`, define an `app` variable in your Python file.
+
+For example, define a `index.py` file inside a folder as follows:
+
+```python
+from sanic import Sanic
+from sanic.response import json
+app = Sanic()
+
+
+@app.route('/')
+@app.route('/<path:path>')
+async def index(request, path=""):
+    return json({'hello': path})
+```
+
+<Caption>
+  An example <InlineCode>index.py</InlineCode> file, using Sanic for a ASGI
+  application.
+</Caption>
+
+Inside `requirements.txt` define:
+
+```
+sanic==19.6.0
+```
+
+<Caption>
+  An example <InlineCode>requirements.txt</InlineCode> file, listing{' '}
+  <InlineCode>sanic</InlineCode> as a dependency.
+</Caption>
+
+## Advanced Ruby Usage
+
+In order to use this Runtime, no configuration is needed. You only need to create a file inside the `api` directory.
+
+**The entry point of this Runtime is a glob matching `.rb` or `.ru` (for [Rack](#advanced-usage/advanced-ruby-usage/rack-interface)) source files** with one of the following variables defined:
+
+- `Handler` proc that matches the `do |req, res|` signature.
+- `Handler` class that inherits from the `WEBrick::HTTPServlet::AbstractServlet` class.
+
+For more information on using this Runtime, [see the Ruby Runtime section](#official-runtimes/ruby).
+
+Alternatively, [a `.ru` Rack config file](#advanced-usage/advanced-ruby-usage/rack-interface) will serve the Ruby application it contains.
+
+### Rack Interface
+
+Many Ruby frameworks interface with [Rack](https://rack.github.io/) for forwarding HTTP requests to web applications written in Ruby. You can use Rack with frameworks such as Sinatra or Rails.
+
+Instead of defining a handler, write the application as usual, like this Sinatra application:
+
+```ruby
+require 'sinatra'
+
+get '/*' do
+    'Hello world'
+end
+```
+
+<Caption>
+  An example <InlineCode>Sinatra</InlineCode> application.
+</Caption>
+
+Inside `Gemfile` define:
+
+```ruby
+source "https://rubygems.org"
+
+gem "sinatra", "~> 2.0"
+gem "rack", "~> 2.0"
+```
+
+<Caption>
+  An example <InlineCode>Gemfile</InlineCode> file.
+</Caption>
+
+Add a Rack config file at `index.ru` to start the application:
+
+```ruby
+require './app'
+
+run Sinatra::Application
+```
+
+<Caption>
+  An example <InlineCode>index.ru</InlineCode> file.
+</Caption>
+
+---
+
+## Developing Your Own Runtime
+
+Extending the feature-set of a ZEIT Now deployment is as simple as creating a Runtime that takes a list of files and outputs either static files or dynamic [Serverless Functions](/docs/v2/serverless-functions/introduction/).
+
+[A full API reference is available to help with creating Runtimes.](https://github.com/zeit/now/blob/master/DEVELOPING_A_RUNTIME.md)
+
+---
+
+## Technical Details
+
+### Caching Data
+
+A runtime can retain an archive of up to `100mb` of the filesystem at `build` time. The cache key is generated as a combination of:
+
+- Project name.
+- Team id or user id.
+- Entrypoint path (e.g., `api/users/index.go`).
+- Runtime identifier including version (e.g.: `@now/go@0.0.1`).
+
+The cache will be invalidated if any of those items changes. The user can bypass the cache by running `now -f`.
+
+### Limits
+
+- Runtimes can run for a maximum of 5 minutes before the execution times out.
+- The maximum cache archive size of a Runtime is 100mb.
+- The cache TTL is 7 days.
+
+### Including Additional Files
+
+Most Runtimes use static analysis to determine which source files should be included in the Serverless Function output based on the build `src` input. Any unused code or assets is ignored to ensure your Serverless Function is as small as possible.
+
+For example, the Node Runtime looks at calls to `require()` or `fs.readFile()` in order to determine which files to include automatically.
+
+<Code lang="javascript">{`// index.js
+const { readFileSync } = require('fs');
+const { join } = require('path');
+const file = readFileSync(join(__dirname, 'config', 'ci.yml'), 'utf8');
+`}</Code>
+<Caption>
+    This <InlineCode>/index.js</InlineCode> file reads the contents of{' '}
+    <InlineCode>/config/ci.yml</InlineCode>.<br />
+    The use of <InlineCode>__dirname</InlineCode> is necessary to read a file relative
+    to the current file.
+  </Caption>
+
+In some cases, you may wish to include templates or views that are not able to be statically analyzed. Runtimes provide a configuration for `includeFiles` that accepts an array of globs that will always be included in the Serverless Functions output.
+
+<Code lang="json">{`{
+  "functions": {
+    "api/test.js": {
+      "includeFiles": "templates/**"
+    }
+  }
+}`}</Code>
+<Caption>
+  Using the{' '}
+  <Link href="/docs/v2/deployments/official-runtimes/node-js-now-node/">
+    default Node.js language
+  </Link>{' '}
+  and configuring the <InlineCode>includeFiles</InlineCode> within a{' '}
+  <Link href="/docs/configuration#project/builds">
+    now.json configuration file
+  </Link>
+  .
+</Caption>
