@@ -110,9 +110,9 @@ function ErrorPage({ statusCode }) {
             documentation for keywords.
           </Text>
           <LinkList>
-            <Link href="/docs">Docs</Link>
+            {/*<Link href="/docs">Docs</Link>*/}
             <Link href="/guides">Guides</Link>
-            <Link href="/blog">Blog</Link>
+            {/*<Link href="/blog">Blog</Link>*/}
           </LinkList>
         </div>
       </Content>

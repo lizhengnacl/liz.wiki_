@@ -118,32 +118,32 @@ class Layout extends React.Component {
 
     return (
       <Page>
-        <UserContext.Consumer>
-          {({ user, userLoaded }) => (
-            <UseTeamInfo
-              user={user}
-              render={({ teams }) => (
-                <LayoutHeader
-                  hideHeader={hideHeader}
-                  detached={detached}
-                  inHero={scrollPosition < 334}
-                  isTop={scrollPosition <= 0}
-                  hideHeaderSearch={dynamicSearch && scrollPosition < 334}
-                  dynamicSearch={dynamicSearch}
-                  onToggleNavigation={this.handleToggleNavigation}
-                  user={user}
-                  teams={teams}
-                  userLoaded={userLoaded}
-                  navigationActive={this.state.navigationActive}
-                  handleIndexClick={this.handleIndexClick}
-                  zenModeActive={this.state.zenModeActive}
-                  exitZenMode={this.exitZenMode}
-                  data={data}
-                />
-              )}
-            />
-          )}
-        </UserContext.Consumer>
+        {/*<UserContext.Consumer>*/}
+        {/*  {({ user, userLoaded }) => (*/}
+        {/*    <UseTeamInfo*/}
+        {/*      user={user}*/}
+        {/*      render={({ teams }) => (*/}
+        {/*        <LayoutHeader*/}
+        {/*          hideHeader={hideHeader}*/}
+        {/*          detached={detached}*/}
+        {/*          inHero={scrollPosition < 334}*/}
+        {/*          isTop={scrollPosition <= 0}*/}
+        {/*          hideHeaderSearch={dynamicSearch && scrollPosition < 334}*/}
+        {/*          dynamicSearch={dynamicSearch}*/}
+        {/*          onToggleNavigation={this.handleToggleNavigation}*/}
+        {/*          user={user}*/}
+        {/*          teams={teams}*/}
+        {/*          userLoaded={userLoaded}*/}
+        {/*          navigationActive={this.state.navigationActive}*/}
+        {/*          handleIndexClick={this.handleIndexClick}*/}
+        {/*          zenModeActive={this.state.zenModeActive}*/}
+        {/*          exitZenMode={this.exitZenMode}*/}
+        {/*          data={data}*/}
+        {/*        />*/}
+        {/*      )}*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*</UserContext.Consumer>*/}
         <ZenContext.Provider value={this.state.zenModeActive}>
           {children}
         </ZenContext.Provider>
