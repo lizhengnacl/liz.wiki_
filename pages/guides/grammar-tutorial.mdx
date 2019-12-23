@@ -1,0 +1,549 @@
+import Guide from '~/components/layout/guide'
+import Snippet from '~/components/snippet'
+import Caption from '~/components/text/caption'
+import Note from '~/components/text/note'
+import Card from '~/components/card'
+import { Image } from '~/components/media'
+import { Code } from '~/components/text/code'
+
+export const meta = {
+  title: '对照表-写法篇',
+  description: '基于标准的Markdown语法，以JSX的方式进行拓展。',
+  published: '2019-12-23 17:38:00',
+  authors: ['lizhengnacl'],
+  url: '/guides/grammar-tutorial',
+  editUrl: 'pages/guides/grammar-tutorial.mdx',
+  lastEdited: '2019-12-23 17:38:00'
+}
+
+export default ({ children }) => <Guide meta={meta}>{children}</Guide>
+
+export const config = {
+  amp: 'hybrid'
+}
+
+## Markdown
+
+支持所有[标准的Markdown语法](https://daringfireball.net/projects/markdown/syntax)
+
+### 块元素
+
+#### 表头
+
+```markdown
+This is an H1
+=============
+
+This is an H2
+-------------
+
+# This is an H1
+## This is an H2
+###### This is an H6
+
+# This is an H1 #
+## This is an H2 ##
+### This is an H3 ######
+```
+
+#### 引用
+
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+>
+> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+> id sem consectetuer libero luctus adipiscing.
+
+```markdown
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+>
+> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+> id sem consectetuer libero luctus adipiscing.
+```
+
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+id sem consectetuer libero luctus adipiscing.
+
+```markdown
+> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+id sem consectetuer libero luctus adipiscing.
+```
+
+引用还可以嵌套
+
+> This is the first level of quoting.
+>
+> > This is nested blockquote.
+>
+> Back to the first level.
+
+```markdown
+> This is the first level of quoting.
+>
+> > This is nested blockquote.
+>
+> Back to the first level.
+```
+
+当然，也包含其他的一些元素
+
+> ## This is a header.
+>
+> 1.   This is the first list item.
+> 2.   This is the second list item.
+>
+> Here's some example code:
+>
+>       return shell_exec("echo $input | $markdown_script");
+
+```markdown
+> ## This is a header.
+>
+> 1.   This is the first list item.
+> 2.   This is the second list item.
+>
+> Here's some example code:
+>
+>       return shell_exec("echo $input | $markdown_script");
+```
+
+#### 列表
+
+无序列表
+
+* Red
+* Green
+* Blue
+
+```markdown
+* Red
+* Green
+* Blue
+
++ Red
++ Green
++ Blue
+
+- Red
+- Green
+- Blue
+```
+
+有序列表
+
+1. Bird
+2. McHale
+3. Parish
+
+```markdown
+1. Bird
+2. McHale
+3. Parish
+```
+
+每个列表项中也可以包含多个段落
+
+1.  This is a list item with two paragraphs. Lorem ipsum dolor
+    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
+    mi posuere lectus.
+
+    Vestibulum enim wisi, viverra nec, fringilla in, laoreet
+    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
+    sit amet velit.
+
+2.  Suspendisse id sem consectetuer libero luctus adipiscing.
+
+```markdown
+1.  This is a list item with two paragraphs. Lorem ipsum dolor
+    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
+    mi posuere lectus.
+
+    Vestibulum enim wisi, viverra nec, fringilla in, laoreet
+    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
+    sit amet velit.
+
+2.  Suspendisse id sem consectetuer libero luctus adipiscing.
+```
+
+列表项中的代码段，需要4个空格或者1个tab
+
+*   A list item with a code block:
+
+        <code goes here>
+
+```markdown
+*   A list item with a code block:
+
+        <code goes here>
+```
+
+转义，避免不必要的列表项
+
+1986\. What a great season.
+
+```markdown
+1986\\. What a great season.
+```
+
+#### 代码段
+
+4个空格或者1个tab
+
+This is a normal paragraph:
+
+    This is a code block.
+
+```markdown
+This is a normal paragraph:
+
+    This is a code block.
+```
+
+#### 水平线
+
+* * *
+
+***
+
+*****
+
+- - -
+
+---------------------------------------
+
+```markdown
+* * *
+
+***
+
+*****
+
+- - -
+
+---------------------------------------
+```
+
+### 行内元素
+
+#### 链接
+This is [an example](http://example.com/title) inline link.
+[This link](http://example.net/) has no title attribute.
+
+```markdown
+This is [an example](http://example.com/title) inline link.
+[This link](http://example.net/) has no title attribute.
+```
+
+引用本地资源
+
+See my [About](/about/) page for details.
+
+```markdown
+See my [About](/about/) page for details.
+```
+
+This is [an example][id] reference-style link.
+```markdown
+This is [an example][id] reference-style link.
+
+```
+
+[id]: http://example.com/  "Optional Title Here"
+
+在文档中任意位置，定义`id`
+```markdown
+[id]: http://example.com/  "Optional Title Here"
+```
+
+Visit [Daring Fireball][] for more information.
+[Daring Fireball]: http://daringfireball.net/
+
+```markdown
+Visit [Daring Fireball][] for more information.
+[Daring Fireball]: http://daringfireball.net/
+```
+
+I get 10 times more traffic from [Google] [1] than from
+[Yahoo] [2] or [MSN] [3].
+
+  [1]: http://google.com/        "Google"
+  [2]: http://search.yahoo.com/  "Yahoo Search"
+  [3]: http://search.msn.com/    "MSN Search"
+
+```markdown
+I get 10 times more traffic from [Google] [1] than from
+[Yahoo] [2] or [MSN] [3].
+
+  [1]: http://google.com/        "Google"
+  [2]: http://search.yahoo.com/  "Yahoo Search"
+  [3]: http://search.msn.com/    "MSN Search"
+```
+
+I get 10 times more traffic from [Google][] than from
+[Yahoo][] or [MSN][].
+
+  [google]: http://google.com/        "Google"
+  [yahoo]:  http://search.yahoo.com/  "Yahoo Search"
+  [msn]:    http://search.msn.com/    "MSN Search"
+
+```markdown
+I get 10 times more traffic from [Google][] than from
+[Yahoo][] or [MSN][].
+
+  [google]: http://google.com/        "Google"
+  [yahoo]:  http://search.yahoo.com/  "Yahoo Search"
+  [msn]:    http://search.msn.com/    "MSN Search"
+```
+
+#### 重点、强调
+
+*single asterisks*
+
+_single underscores_
+
+**double asterisks**
+
+__double underscores__
+
+```markdown
+*single asterisks*
+
+_single underscores_
+
+**double asterisks**
+
+__double underscores__
+```
+
+un*frigging*believable
+
+```markdown
+un*frigging*believable
+```
+
+\*this text is surrounded by literal asterisks\*
+
+```markdown
+\\*this text is surrounded by literal asterisks\\*
+```
+
+#### 代码
+
+Use the `printf()` function.
+```markdown
+Use the `printf()` function.
+```
+
+包含**`**符号的代码
+
+``There is a literal backtick (`) here.``
+
+```markdown
+``There is a literal backtick (`) here.``
+```
+
+A single backtick in a code span: `` ` ``
+A backtick-delimited string in a code span: `` `foo` ``
+
+```markdown
+A single backtick in a code span: `` ` ``
+A backtick-delimited string in a code span: `` `foo` ``
+```
+
+#### 图片
+```markdown
+![Alt text](https://zeit.co/api/www/avatar/098470321d06e7d0c264b762c14c86c4adfed165)
+
+![Alt text][id]
+[id]: https://zeit.co/api/www/avatar/098470321d06e7d0c264b762c14c86c4adfed165  "Optional title attribute"
+```
+
+### 混杂
+
+#### 自动链接
+<http://example.com/>
+<address@example.com>
+```markdown
+<http://example.com/>
+<http://example.com/>
+```
+
+#### 反斜杠
+\*literal asterisks\*
+```markdown
+\\*literal asterisks\\*
+```
+
+markdown为以下字符提供反斜杠转义
+```
+\\   backslash
+`   backtick
+*   asterisk
+_   underscore
+{}  curly braces
+[]  square brackets
+()  parentheses
+#   hash mark
++   plus sign
+-   minus sign (hyphen)
+.   dot
+!   exclamation mark
+```
+
+## 自定义
+
+### Snippet
+<Snippet dark text="npm run dev" />
+<Snippet text="npm run dev" />
+
+```jsx
+<Snippet dark text="npm run dev" />
+<Snippet text="npm run dev" />
+```
+
+### Caption
+<Caption>Caption</Caption>
+
+```jsx
+<Caption>Caption</Caption>
+```
+
+### Note
+<Note type="warning">This guide requires Next.js 9+ to work correctly.</Note>
+<br />
+<Note>This guide requires Next.js 9+ to work correctly.</Note>
+
+```jsx
+<Note type="warning">This guide requires Next.js 9+ to work correctly.</Note>
+<Note>This guide requires Next.js 9+ to work correctly.</Note>
+```
+
+### Card
+<Card title="Introduction to ZEIT Now" href="/docs/v2/introduction">
+  You've got your Serverless Function ready to go, now learn how to deploy it
+  with a single-command and a first-class frontend with no extra configuration.
+</Card>
+
+```jsx
+<Card title="Introduction to ZEIT Now" href="/docs/v2/introduction">
+  You've got your Serverless Function ready to go, now learn how to deploy it
+  with a single-command and a first-class frontend with no extra configuration.
+</Card>
+```
+
+### Image
+<Image
+  src="https://zeit.co/api/www/avatar/098470321d06e7d0c264b762c14c86c4adfed165"
+  width={200}
+  height={200}
+  oversize
+  shadow
+/>
+
+```jsx
+<Image
+  src="https://zeit.co/api/www/avatar/098470321d06e7d0c264b762c14c86c4adfed165"
+  width={200}
+  height={200}
+  oversize
+  shadow
+/>
+```
+
+### Code
+<Code lang="json">{
+`{
+  "job": {
+    "id": "A7OcAEEgNRh61p1VZXE1",
+    "state": "PENDING",
+    "createdAt": 1564399503217
+  }
+}`
+}</Code>
+
+
+```jsx
+<Code lang="json">{
+`{
+  "job": {
+    "id": "A7OcAEEgNRh61p1VZXE1",
+    "state": "PENDING",
+    "createdAt": 1564399503217
+  }
+}`
+}</Code>
+```
+
+## 模板代码
+
+```jsx
+import Guide from '~/components/layout/guide'
+import Snippet from '~/components/snippet'
+import Caption from '~/components/text/caption'
+import Note from '~/components/text/note'
+import Card from '~/components/card'
+import { Image } from '~/components/media'
+import { Code } from '~/components/text/code'
+
+export const meta = {
+  title: '文档语法',
+  description: '快捷查询文档语法',
+  published: '2019-12-23T17:38:00.860Z',
+  authors: ['lizhengnacl'],
+  url: '/guides/grammar',
+  editUrl: 'pages/guides/grammar.mdx',
+  lastEdited: '2019-12-23T17:38:00.860Z'
+}
+
+export default ({ children }) => <Guide meta={meta}>{children}</Guide>
+
+## 开始写Markdown
+文档内容
+
+想引用标准HTML标签一样，引用自定义组件
+
+<Snippet dark text="npm run dev" />
+<Snippet text="npm run dev" />
+
+
+<Caption>Caption</Caption>
+
+
+<Note type="warning">This guide requires Next.js 9+ to work correctly.</Note>
+<br />
+<Note>This guide requires Next.js 9+ to work correctly.</Note>
+
+<Card title="Introduction to ZEIT Now" href="/docs/v2/introduction">
+  You've got your Serverless Function ready to go, now learn how to deploy it
+  with a single-command and a first-class frontend with no extra configuration.
+</Card>
+
+<Image
+  src="https://zeit.co/api/www/avatar/098470321d06e7d0c264b762c14c86c4adfed165"
+  width={200}
+  height={200}
+  oversize
+  shadow
+/>
+
+<Code lang="json">{
+`{
+  "job": {
+    "id": "A7OcAEEgNRh61p1VZXE1",
+    "state": "PENDING",
+    "createdAt": 1564399503217
+  }
+}`
+}</Code>
+```

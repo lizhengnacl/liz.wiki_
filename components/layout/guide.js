@@ -78,7 +78,7 @@ class Guide extends React.PureComponent {
         <Layout>
           <Head
             titlePrefix=""
-            titleSuffix=" - ZEIT Now Guides"
+            titleSuffix=" - liz.wiki"
             title={`${meta.title}`}
             description={meta.description}
             image={meta.image}

@@ -42,6 +42,7 @@
     "mitt": "1.1.2",
     "next": "9.1.2-canary.8",
     "nprogress": "0.2.0",
+    "prettier": "^1.19.1",
     "prop-types": "15.6.2",
     "qs": "6.6.0",
     "ramda": "0.25.0",

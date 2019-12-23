@@ -34,6 +34,10 @@ module.exports = withMDX({
     webpack(config, option){
         // ~ alias
         config.resolve.alias['~'] = path.resolve(__dirname);
+
+        if (option.isServer) {
+            require('./scripts/generate-site-map')
+        }
         return config;
     },
 });
