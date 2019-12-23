@@ -1,0 +1,341 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telphone=no, email=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>key</title>
+    <style type="text/css">
+        * {
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
+            margin: 0;
+            padding: 0;
+        }
+        input[type=text]:focus,
+        input[type=password]:focus,
+        input[type=email]:focus,
+        input[type=url]:focus,
+        input[type=date]:focus,
+        input[type=month]:focus,
+        input[type=time]:focus,
+        input[type=datetime]:focus,
+        input[type=datetime-local]:focus,
+        input[type=week]:focus,
+        input[type=number]:focus,
+        input[type=search]:focus,
+        input[type=tel]:focus,
+        input[type=color]:focus,
+        select:focus,
+        textarea:focus {
+            outline: 0;
+            outline: thin dotted \9;
+            border-color: #129FEA
+        }
+        html, body {
+            min-height: 100%;
+            font-size: 10px;
+        }
+        html {
+            font-family: HelveticaNeue-Light,
+            'Helvetica Neue Light',
+            'Helvetica Neue',
+            Helvetica,
+            Arial,
+            sans-serif; /* 1 */
+            -ms-text-size-adjust: 100%; /* 2 */
+            -webkit-text-size-adjust: 100%; /* 2 */
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            padding: 20px 0;
+        }
+        li {
+            list-style: none;
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        blockquote {
+            font-size: 1.3rem;
+            line-height: 1.2em;
+        }
+        strong {
+            font-weight: bold;
+            color: red;
+        }
+        h3 {
+            font-size: 1.6rem;
+            padding: 0.2em 0 0.6em;
+        }
+        h4 {
+            text-align: center;
+            line-height: 1em;
+            padding-bottom: 20px;
+            color: #666;
+            font-weight: normal;
+            font-size: 1.4rem;
+            padding-top: 5px;
+        }
+        p {
+            font-size: 1.3rem;
+            line-height: 1.2em;
+            margin: 6px 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            font-size: 2rem;
+            line-height: 2.5em;
+            background: #df4e5f;
+            color: #fff;
+            border-radius: 5px;
+            max-width: 402px;
+            border: none;
+        }
+        input[type="password"], select {
+            vertical-align: baseline;
+            text-transform: none;
+            letter-spacing: 0.01em;
+            padding: .5em .6em;
+            display: inline-block;
+            box-shadow: inset 0 1px 3px #ddd;
+            border-radius: 4px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            display: block;
+            font-size: 1.4rem;
+            width: 200px;
+            height: 30px;
+        }
+        input[type="range"] {
+            width: 200px;
+        }
+        table {
+            width: 100%;
+        }
+        .main {
+            margin: 0 auto;
+            max-width: 400px;
+            padding: 0 20px;
+        }
+        td {
+            padding: 10px 0;
+            font-size: 1.4rem;
+            line-height: 1.4em;
+        }
+        tr td:first-child {
+            text-align: right;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+        code {
+            background: #ccc;
+            padding: 1px 2px;
+            border-radius: 3px;
+        }
+        #result {
+            text-align: center !important;
+            display: block;
+            width: 100%;
+            font-size: 3rem;
+            font-weight: bold;
+            font-family: consolas, monaco, menlo, 'courier new', courier, monospace, 'MS Courier New', 'American Typewriter';
+            word-wrap: break-word;
+            word-break: break-all;
+            line-height: 1.4em;
+        }
+        #qrcode img{
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body cz-shortcut-listen="true">
+<div class="main">
+    <h1>Key Generator</h1>
+    <table cellspacing="0" border="0">
+        <tbody>
+        <tr>
+            <td width="60"><span>Type</span></td>
+            <td>
+                <select id="type">
+                    <option value="MD5" selected="selected">MD5</option>
+                    <option value="SHA1">SHA1</option>
+                    <option value="SHA256">SHA256</option>
+                    <option value="SHA512">SHA512</option>
+                    <option value="RMD160">RMD160</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span>NaCl</span></td>
+            <td>
+                <input id="content" type="password" placeholder="盐颗粒">
+            </td>
+        </tr>
+        <tr>
+            <td><span>Key</span></td>
+            <td><input id="hmac" type="password" placeholder="keyword"></td>
+        </tr>
+        <tr>
+            <td><span>Length<br><code id="length-show">15</code></span></td>
+            <td>
+                <input id="length" type="range" max="40" min="1" step="1" value="15" oninput="range()"
+                       onchange="range()">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span id="result"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button onclick="gen()" id="button">Generate</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="qrcode"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="//cdn.bootcss.com/jshashes/1.0.7/hashes.min.js"></script>
+<script src="//s3.meituan.net/v1/mss_78d1aa5426c546bfa023ca0cacfa2cd1/cdn/neixin/video/qrcode.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        function $(id) {
+            return document.getElementById(id);
+        }
+        var type = $('type');
+        var length = $('length');
+        var hmac = $('hmac');
+        var content = $('content');
+        function getLen() {
+            return Math.max(parseInt(length.value) || 15, 4);
+        }
+        function get_(res, value) {
+            var reg = /[0-9]/g,
+                count = 0,
+                arr = [];
+            while(arr = reg.exec(res)) {
+                count += Number(arr[0]);
+            }
+            count %= value;
+            res = res.split('')
+            res.splice(count, 1, '_');
+            return res.join('');
+        }
+        window.gen = function() {
+            var t = type.value;
+            if(typeof Hashes[t] === 'function') {
+                var encrpty = new Hashes[t];
+                var str = (content.value || '').trim().toLowerCase();
+                if(str) {
+                    var value = getLen();
+                    var key = (hmac.value || '').trim();
+                    if(key) {
+                        var pwd = encrpty.b64_hmac(key, str);
+                        var res = pwd.replace(/\W/g, '').substring(0, value);
+                        $('result').innerHTML = get_(res, value);
+                        localStorage.setItem('_1pwd_type_', t);
+                        localStorage.setItem('_1pwd_leng_', value);
+                    } else {
+                        alert('missing 1password');
+                        hmac.focus();
+                        hmac.select();
+                    }
+                } else {
+                    alert('missing content');
+                    content.focus();
+                    content.select();
+                }
+            } else {
+                alert('Invalid type');
+            }
+        };
+        window.range = function() {
+            $('length-show').innerHTML = getLen();
+        }
+        try {
+            var lastType = localStorage.getItem('_1pwd_type_');
+            if(lastType) {
+                var options = document.getElementsByTagName('option');
+                for(var i = 0, len = options.length; i < len; i++) {
+                    var opt = options[i];
+                    if(opt.value === lastType) {
+                        opt.setAttribute('selected', 'selected');
+                    }
+                }
+            }
+            var lastLength = localStorage.getItem('_1pwd_leng_');
+            if(lastLength) {
+                length.value = lastLength;
+                range();
+            }
+        } catch(e) {
+        }
+    })();
+    // 鸣谢 https://www.zhihu.com/people/fouber
+    (function() {
+        // 二维码
+        var mountPoint = document.querySelector('#qrcode');
+        var password = document.querySelector("#result");
+        var button = document.querySelector('#button');
+        var qrcode = new QRCode(mountPoint, {
+            width: 300,
+            height: 300
+        });
+        function makeCode() {
+            if(!password.innerText) {
+                return;
+            }
+            qrcode.makeCode(`http://mos.liz.wiki/key?key=${password.innerText}`);
+        }
+        makeCode();
+        button.addEventListener('click', function() {
+            makeCode();
+        });
+    })();
+
+    (function(){
+        // 复制到剪切板
+        function copyContent(elementId) {
+            let aux = document.createElement('input');
+            aux.setAttribute('value', document.getElementById(elementId).innerHTML);
+            document.body.appendChild(aux);
+            // 执行选中
+            // 注意: 只有 input 和 textarea 可以执行 select() 方法.
+            aux.select();
+            // 执行复制命令
+            document.execCommand('copy');
+            // 将 input 元素移除
+            document.body.removeChild(aux);
+        }
+
+        document.querySelector('#button').addEventListener('click', function() {
+            copyContent('result');
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+{
+  "routes": [{ "src": "/key", "dest": "/key.html" }]
+}
