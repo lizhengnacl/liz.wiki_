@@ -98,35 +98,35 @@ class Guide extends React.PureComponent {
                   <DeployBanner example={meta.example} demo={meta.demo} />
                 )}
                 {this.props.children}
-                <NonAmpOnly>
-                  <>
-                    <HR />
-                    <FooterFeedback />
-                  </>
-                </NonAmpOnly>
-                <HR />
-                <div className="guide-author" id="authors">
-                  <H5>Written By</H5>
-                  <div className="authors-list">
-                    {meta.authors.map(author => (
-                      <div className="author-info" key={author}>
-                        <Avatar
-                          size={32}
-                          username={author}
-                          title={`Written by ${author}`}
-                        />
-                        <span className="username">{author}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span className="published">
-                    on {formatDate(meta.published, 'MMMM Do YYYY')}
-                  </span>
-                </div>
-                <ContentFooter
-                  lastEdited={meta.lastEdited}
-                  editUrl={meta.editUrl}
-                />
+                {/*<NonAmpOnly>*/}
+                {/*  <>*/}
+                {/*    <HR />*/}
+                {/*    <FooterFeedback />*/}
+                {/*  </>*/}
+                {/*</NonAmpOnly>*/}
+                {/*<HR />*/}
+                {/*<div className="guide-author" id="authors">*/}
+                {/*  <H5>Written By</H5>*/}
+                {/*  <div className="authors-list">*/}
+                {/*    {meta.authors.map(author => (*/}
+                {/*      <div className="author-info" key={author}>*/}
+                {/*        <Avatar*/}
+                {/*          size={32}*/}
+                {/*          username={author}*/}
+                {/*          title={`Written by ${author}`}*/}
+                {/*        />*/}
+                {/*        <span className="username">{author}</span>*/}
+                {/*      </div>*/}
+                {/*    ))}*/}
+                {/*  </div>*/}
+                {/*  <span className="published">*/}
+                {/*    on {formatDate(meta.published, 'MMMM Do YYYY')}*/}
+                {/*  </span>*/}
+                {/*</div>*/}
+                {/*<ContentFooter*/}
+                {/*  lastEdited={meta.lastEdited}*/}
+                {/*  editUrl={meta.editUrl}*/}
+                {/*/>*/}
               </section>
             </Wrapper>
           </article>
