@@ -1,10 +1,12 @@
 import { Component } from 'react'
 import CategoryIndex from './category-index'
+import SectionIndex from './section-index';
 
 class DocsIndex extends Component {
   renderCategory = category => {
     return (
       <CategoryIndex
+        spread={this.props.spread}
         key={category.slug}
         category={category}
         activeItem={this.props.activeItem}

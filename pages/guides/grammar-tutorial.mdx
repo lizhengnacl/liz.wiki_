@@ -14,7 +14,7 @@ export const meta = {
   url: '/guides/grammar-tutorial',
   editUrl: 'pages/guides/grammar-tutorial.mdx',
   lastEdited: '2019-12-23 17:38:00',
-  toc: true
+  toc: {spread: true}
 }
 
 export default ({ children }) => <Guide meta={meta}>{children}</Guide>

@@ -62,8 +62,8 @@ class SectionIndex extends Component {
   }
 
   render() {
-    const { category, getHref, section, onClickLink } = this.props
-    const active = isSectionActive(this.props)
+    const { category, getHref, section, onClickLink, spread} = this.props
+    const active = spread || isSectionActive(this.props)
     const { href, as } = getHref({
       category: category.slug,
       section: section.slug

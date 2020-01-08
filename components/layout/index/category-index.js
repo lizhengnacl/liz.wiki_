@@ -7,6 +7,7 @@ class CategoryIndex extends Component {
   renderSection = section => {
     return (
       <SectionIndex
+        spread={this.props.spread}
         key={section.slug}
         getHref={this.props.getHref}
         onEntryActive={this.props.onEntryActive}

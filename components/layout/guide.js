@@ -25,6 +25,7 @@ import Content from '~/components/layout/content';
 import Context from '~/lib/api/slugs-context';
 import getFragment from '~/lib/api/get-fragment';
 import * as bodyLocker from '~/lib/utils/body-locker';
+import SectionIndex from './index/section-index';
 
 // import GrammarTutorial from '~/pages/guides/grammar-tutorial.mdx'
 
@@ -154,7 +155,7 @@ class Guide extends React.PureComponent {
           />
 
           {
-            meta.toc === true && <DocsRuntime docs={this.props.children}>
+            meta.toc !== undefined && <DocsRuntime docs={this.props.children}>
               {({structure}) => (
                 <Main>
                   <Sidebar
@@ -163,6 +164,7 @@ class Guide extends React.PureComponent {
                     fixed
                   >
                     <DocsIndex
+                      spread={meta.toc.spread}
                       activeItem={active}
                       getHref={getHref}
                       onEntryActive={this.handleEntryActive}
@@ -258,7 +260,7 @@ class Guide extends React.PureComponent {
           }
 
           {
-            meta.toc !== true && <article>
+            meta.toc === undefined && <article>
               <header className="guide-heading content-heading">
                 <Wrapper width="900">
                   <H1>{meta.title}</H1>
