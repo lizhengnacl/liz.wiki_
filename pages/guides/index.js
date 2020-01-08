@@ -15,14 +15,14 @@ const Guides = () => (
       titlePrefix=""
       titleSuffix=""
       title="liz.wiki"
-      description="一生二 二生三 三生万物"
+      description="一生二"
     />
 
     <div className="guides">
       <div className="guide-heading">
         <Wrapper>
           <H1>liz.wiki</H1>
-          <P>一生二 二生三 三生万物</P>
+          <P>一生二</P>
 
           <div className="actions">
             <span className="caption">Sorted by Newest</span>

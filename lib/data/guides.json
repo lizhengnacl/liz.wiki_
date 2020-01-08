@@ -1,11 +1,14 @@
 [
   {
     "title": "对照表-写法篇",
-    "description": "基于标准的markdown语法，以JSX的方式进行拓展。",
+    "description": "基于标准的Markdown语法，以JSX的方式进行拓展。",
     "published": "2019-12-23 17:38:00",
     "authors": ["lizhengnacl"],
     "url": "/guides/grammar-tutorial",
     "editUrl": "pages/guides/grammar-tutorial.mdx",
-    "lastEdited": "2019-12-23 17:38:00"
+    "lastEdited": "2019-12-23 17:38:00",
+    "toc": {
+      "spread": true
+    }
   }
 ]
