@@ -29,7 +29,7 @@ const getContent = (zenModeActive, children, center, small) => {
 
         :global(.sidebar) + .content {
           margin-left: auto;
-          max-width: calc(100% - 280px);
+          max-width: calc(100% - 180px);
           padding-left: 24px;
         }
 

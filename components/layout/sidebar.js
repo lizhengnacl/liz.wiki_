@@ -18,7 +18,7 @@ class Sidebar extends Component {
                 background: #fff;
                 padding-bottom: 40px;
                 padding-right: 24px;
-                width: 280px;
+                width: 180px;
                 -webkit-overflow-scrolling: touch;
                 flex-shrink: 0;
               }
