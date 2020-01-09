@@ -22,7 +22,7 @@ module.exports = withMDX({
     // Allow mdx and md files to be pages
     pageExtensions: ['jsx', 'js', 'mdx', 'md'],
 
-    assetPrefix: isProd ? '' : '',
+    assetPrefix: isProd ? 'https://liz-wiki.oss-cn-beijing.aliyuncs.com' : '',
 
     env: {
         VERSION: require('./package.json').version,
