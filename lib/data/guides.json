@@ -1,5 +1,17 @@
 [
   {
+    "title": "如何写好工作总结",
+    "description": "每到写工作总结的时候，你是不是又要抓耳挠腮呢？其实，出彩的工作总结是有套路的，熟悉了这些套路，你就不愁写不好工作总结。",
+    "published": "2020-01-09 18:41:00",
+    "authors": ["lizhengnacl"],
+    "url": "/guides/how-to-write-a-summary",
+    "editUrl": "pages/guides/how-to-write-a-summary.mdx",
+    "lastEdited": "2020-01-09 18:41:00",
+    "toc": {
+      "spread": true
+    }
+  },
+  {
     "title": "语法参照表-写法篇",
     "description": "基于标准Markdown语法，以JSX方式进行拓展。",
     "published": "2019-12-23 17:38:00",
