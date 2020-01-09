@@ -552,3 +552,21 @@ export default ({ children }) => <Guide meta={meta}>{children}</Guide>
 }`
 }</Code>
 ```
+
+## 技巧
+
+### 引用本地静态资源
+
+例如引用一张图片，将图片资源放置在 `public/assets/images` 目录下，引用方式如下：
+
+```
+<Image
+  src="/assets/images/how-to-write-a-summary-5.png"
+  width={800}
+  height={320}
+  oversize
+  shadow
+/>
+```
+
+构建过程中，会自动上传至CDN，线上环境直接引用CDN资源加速
