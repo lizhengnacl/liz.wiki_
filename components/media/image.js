@@ -55,6 +55,15 @@ class Image extends Component {
     }
   }
 
+  getImageSrc(src){
+    // 线上环境使用CDN地址
+    if(src.indexOf('/') === 0){
+      // IMAGE_ASSETS_URL
+      return `${process.env.IMAGE_ASSETS_URL}${src}`
+    }
+    return src
+  }
+
   render() {
     const {
       caption,
@@ -93,7 +102,7 @@ class Image extends Component {
               <div className="container" style={{ paddingBottom: aspectRatio }}>
                 {this.state.src ? (
                   <img
-                    src={this.state.src || null}
+                    src={this.getImageSrc(this.state.src) || null}
                     width={width}
                     height={height}
                   />
