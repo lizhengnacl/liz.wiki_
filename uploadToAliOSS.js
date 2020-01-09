@@ -57,11 +57,10 @@ class Uploader {
 
 let u = new Uploader({
     ...aliConfig.oss,
-    prefixPath: '/Users/lizhengnacl/liz/liz.wiki_/.next/static/',
+    prefixPath: path.resolve(__dirname, '.next/static') + '/',
 });
 
-// u.uploadFile('/Users/lizhengnacl/liz/learn/js_/ali-oss/index.js').then(console.log);
 u.uploadDir({
-    dirPath: '/Users/lizhengnacl/liz/liz.wiki_/.next/static/',
+    dirPath: path.resolve(__dirname, '.next/static') + '/',
     prefix: '_next/static/',
 }).then(console.log);

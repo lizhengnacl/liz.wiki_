@@ -17,6 +17,11 @@ module.exports = withMDX({
         css: true,
     },
 
+    // https://nextjs.org/docs/api-reference/next.config.js/configuring-the-build-id
+    generateBuildId: async () => {
+        return 'my-build-id';
+    },
+
     exportTrailingSlash: true,
 
     // Allow mdx and md files to be pages
@@ -36,7 +41,7 @@ module.exports = withMDX({
         config.resolve.alias['~'] = path.resolve(__dirname);
 
         if (option.isServer) {
-            require('./scripts/generate-site-map')
+            require('./scripts/generate-site-map');
         }
         return config;
     },
