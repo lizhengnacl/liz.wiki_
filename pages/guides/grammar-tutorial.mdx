@@ -5,6 +5,7 @@ import Note from '~/components/text/note'
 import Card from '~/components/card'
 import { Image } from '~/components/media'
 import { Code } from '~/components/text/code'
+import Comments from '~/components/comments'
 
 export const meta = {
   title: '语法参照表-写法篇',
@@ -570,3 +571,7 @@ export default ({ children }) => <Guide meta={meta}>{children}</Guide>
 ```
 
 构建过程中，会自动上传至CDN，线上环境直接引用CDN资源加速
+
+---
+
+<Comments />
