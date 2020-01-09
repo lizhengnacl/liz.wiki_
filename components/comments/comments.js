@@ -4,14 +4,13 @@
 
 import {Component} from 'react';
 import Valine from 'valine';
-import config from '~/ali.config'
 
 export default class Comments extends Component {
   componentDidMount() {
     new Valine({
       el: '#vcomments',
-      appId: config.leanCloud.appID,
-      appKey: config.leanCloud.appKey,
+      appId: 'puAKOiHKj1KwOJkXOc5LDUaO-gzGzoHsz',
+      appKey: 'lUlRiUdBEj5cwhUF4kCxK8cc',
       notify: false,
       verify: false,
       avatar: 'mp',
