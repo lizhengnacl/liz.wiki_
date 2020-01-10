@@ -66,6 +66,20 @@ export default class Document extends Document_ {
               <>
                 <script
                   async
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                      var _hmt = _hmt || [];
+                      (function() {
+                        var hm = document.createElement("script");
+                        hm.src = "https://hm.baidu.com/hm.js?f085b92569277f39a10af08ce926df18";
+                        var s = document.getElementsByTagName("script")[0]; 
+                        s.parentNode.insertBefore(hm, s);
+                      })();
+                  `
+                  }}
+                />
+                <script
+                  async
                   src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
                 />
                 <script
