@@ -15,7 +15,6 @@ class Sidebar extends Component {
             {children}
             <style jsx>{`
               .sidebar {
-                background: #fff;
                 padding-bottom: 40px;
                 padding-right: 24px;
                 width: 180px;
